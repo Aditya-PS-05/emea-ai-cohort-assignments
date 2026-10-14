@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Uploads (temp PDF storage - content mattum ignore, folder structure preserve)
+uploads/*
+!uploads/.gitkeep
+
+# Environment variables (if added later)
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

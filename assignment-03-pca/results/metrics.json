@@ -1,0 +1,39 @@
+{
+  "dataset": "UCI Wine Quality, red",
+  "target": "quality >= 6",
+  "rows_after_deduplication": 1359,
+  "split": "stratified 80/20, random_state=42",
+  "components": 9,
+  "explained_variance_ratio": [
+    0.2839,
+    0.1754,
+    0.1377,
+    0.1136,
+    0.0858,
+    0.0588,
+    0.0539,
+    0.0375,
+    0.0312
+  ],
+  "models": {
+    "logistic_regression": {
+      "accuracy": 0.7316,
+      "macro_precision": 0.7311,
+      "macro_recall": 0.7318,
+      "macro_f1": 0.7312
+    },
+    "knn": {
+      "accuracy": 0.7206,
+      "macro_precision": 0.7202,
+      "macro_recall": 0.7179,
+      "macro_f1": 0.7184
+    },
+    "gaussian_nb": {
+      "accuracy": 0.75,
+      "macro_precision": 0.7496,
+      "macro_recall": 0.7478,
+      "macro_f1": 0.7484
+    }
+  },
+  "best_by_test_macro_f1": "gaussian_nb"
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Summarizer - WebSocket Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        #progress { background: #f0f0f0; padding: 15px; border-radius: 8px; min-height: 100px; white-space: pre-wrap; }
+        #summary { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px; white-space: pre-wrap; display: none; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>PDF Summarizer - Live Test</h1>
+    <input type="file" id="pdfFile" accept=".pdf" />
+    <button onclick="startSummarize()">Summarize</button>
+
+    <h3>Progress:</h3>
+    <div id="progress">Waiting for file...</div>
+
+    <div id="summary">
+        <h3>Final Summary:</h3>
+        <p id="summaryText"></p>
+    </div>
+
+    <script>
+        function startSummarize() {
+            const fileInput = document.getElementById("pdfFile");
+            const progressDiv = document.getElementById("progress");
+            const summaryDiv = document.getElementById("summary");
+
+            if (!fileInput.files.length) {
+                alert("Please select a PDF file first");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            progressDiv.textContent = "Reading file...\n";
+            summaryDiv.style.display = "none";
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const base64Data = reader.result.split(",")[1];
+
+                const ws = new WebSocket("ws://127.0.0.1:8000/ws/summarize");
+
+                ws.onopen = () => {
+                    progressDiv.textContent += "Connected. Sending file...\n";
+                    ws.send(JSON.stringify({ filename: file.name, file_base64: base64Data }));
+                };
+
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+
+                    if (data.status === "progress") {
+                        progressDiv.textContent += data.message + "\n";
+                    } else if (data.status === "complete") {
+                        progressDiv.textContent += "\n✅ Done!\n";
+                        summaryDiv.style.display = "block";
+                        document.getElementById("summaryText").textContent = data.final_summary;
+                    } else if (data.status === "error") {
+                        progressDiv.textContent += "\n❌ Error: " + data.message + "\n";
+                    }
+                };
+
+                ws.onclose = () => {
+                    progressDiv.textContent += "Connection closed.\n";
+                };
+
+                ws.onerror = (err) => {
+                    progressDiv.textContent += "\n❌ WebSocket error - check server is running\n";
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>

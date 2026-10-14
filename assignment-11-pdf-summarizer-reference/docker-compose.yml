@@ -1,0 +1,13 @@
+services:
+  pdf-summarizer:
+    build: .
+    container_name: pdf-summarizer-agent
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

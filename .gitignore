@@ -1,0 +1,7 @@
+.venv/
+.venv-ml/
+.mamba/
+**/__pycache__/
+**/.ipynb_checkpoints/
+**/tsconfig.tsbuildinfo
+**/desktop.ini

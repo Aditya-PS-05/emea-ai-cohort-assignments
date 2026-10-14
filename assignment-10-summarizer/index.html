@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Text Summarizer</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; background: #f4f6fb; color: #172033; margin: 0; }
+    main { max-width: 760px; margin: 4rem auto; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 8px 32px #17203312; }
+    h1 { margin: 0 0 .4rem; } p { color: #506079; } label { display: block; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    textarea { box-sizing: border-box; width: 100%; min-height: 220px; padding: 1rem; resize: vertical; border: 1px solid #9da8bd; border-radius: 8px; font: inherit; }
+    button { margin-top: 1rem; padding: .7rem 1.2rem; border: 0; border-radius: 8px; color: white; background: #2557b7; font: inherit; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; } #message { min-height: 1.5rem; } #summary { white-space: pre-wrap; background: #eef3fc; padding: 1rem; border-radius: 8px; }
+    @media (max-width: 800px) { main { margin: 1rem; padding: 1.25rem; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Local Text Summarizer</h1>
+    <p>Paste up to 6,000 characters. TinyLlama runs through Ollama on this computer. Check its summary against the original text.</p>
+    <form id="form">
+      <label for="text">Text to summarize</label>
+      <textarea id="text" name="text" minlength="30" maxlength="6000" required></textarea>
+      <button id="submit" type="submit">Summarize</button>
+    </form>
+    <p id="message" role="status" aria-live="polite"></p>
+    <section id="result" hidden>
+      <h2>Summary</h2>
+      <div id="summary"></div>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector('#form');
+    const button = document.querySelector('#submit');
+    const message = document.querySelector('#message');
+    const result = document.querySelector('#result');
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const text = document.querySelector('#text').value.trim();
+      if (text.length < 30) { message.textContent = 'Enter at least 30 non-space characters.'; return; }
+      button.disabled = true;
+      message.textContent = 'Summarizing…';
+      result.hidden = true;
+      try {
+        const response = await fetch('/summarize', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(typeof data.detail === 'string' ? data.detail : 'Could not summarize the text.');
+        document.querySelector('#summary').textContent = data.summary;
+        result.hidden = false;
+        message.textContent = 'Done.';
+      } catch (error) {
+        message.textContent = error.message || 'The request failed. Try again.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "dataset": "UCI Energy Efficiency",
+  "target": "Heating Load",
+  "rows": 768,
+  "split": "80/20, random_state=42",
+  "models": {
+    "linear_degree_1": {
+      "train": {
+        "mse": 8.3701,
+        "rmse": 2.8931,
+        "r2": 0.9171
+      },
+      "test": {
+        "mse": 9.1532,
+        "rmse": 3.0254,
+        "r2": 0.9122
+      },
+      "nonzero_coefficients": 8,
+      "coefficient_l2_norm": 11.4417
+    },
+    "linear_degree_2": {
+      "train": {
+        "mse": 0.4868,
+        "rmse": 0.6977,
+        "r2": 0.9952
+      },
+      "test": {
+        "mse": 0.6447,
+        "rmse": 0.803,
+        "r2": 0.9938
+      },
+      "nonzero_coefficients": 44,
+      "coefficient_l2_norm": 57059.6041
+    },
+    "linear_degree_3": {
+      "train": {
+        "mse": 0.1636,
+        "rmse": 0.4045,
+        "r2": 0.9984
+      },
+      "test": {
+        "mse": 0.2948,
+        "rmse": 0.5429,
+        "r2": 0.9972
+      },
+      "nonzero_coefficients": 164,
+      "coefficient_l2_norm": 1819.547
+    },
+    "ridge_degree_2": {
+      "train": {
+        "mse": 6.3148,
+        "rmse": 2.5129,
+        "r2": 0.9374
+      },
+      "test": {
+        "mse": 7.1789,
+        "rmse": 2.6794,
+        "r2": 0.9311
+      },
+      "nonzero_coefficients": 44,
+      "coefficient_l2_norm": 4.8654
+    },
+    "lasso_degree_2": {
+      "train": {
+        "mse": 6.5315,
+        "rmse": 2.5557,
+        "r2": 0.9353
+      },
+      "test": {
+        "mse": 7.5019,
+        "rmse": 2.739,
+        "r2": 0.928
+      },
+      "nonzero_coefficients": 13,
+      "coefficient_l2_norm": 5.9143
+    }
+  }
+}
