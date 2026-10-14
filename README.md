@@ -1,9 +1,5 @@
 # EMEA AI Cohort assignments
 
-Assignments 1, 4, 6, 8, 9, 11, and 12 were treated as complete for this work. Their upstream study projects are listed in [UPSTREAM.md](UPSTREAM.md).
-
-Assignment index (assignments 2, 3, 5, 7, and 10 are original submissions; the others are upstream study references):
-
 | Assignment | Folder | Run / guide |
 | --- | --- | --- |
 | 1: End-to-End Machine Learning Pipeline | `assignment-01-uci-pipeline` | See upstream README |
